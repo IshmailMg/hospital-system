@@ -21,7 +21,7 @@ import java.util.Set;
     Date: 6 October 2022
 */
 @RestController
-@RequestMapping("hospital system/hospitalroom/")
+@RequestMapping("hospital-system/hospitalroom/")
 @Slf4j
 public class HospitalRoomController {
     private final HospitalRoomService service;

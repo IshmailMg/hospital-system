@@ -30,9 +30,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HospitalRoomControllerTest {
 
-    public static String SECURITY_USERNAME = "user";
-    public static String SECURITY_PASSWORD = "password";
-
     private String baseUrl;
     @LocalServerPort
     private int port;
@@ -52,7 +49,7 @@ class HospitalRoomControllerTest {
         assertNotNull(controller);
         this.hospitalRoom = HospitalRoomFactory.createHospitalRoom("101", 2);
         this.hospitalRoomService.save(hospitalRoom);
-        this.baseUrl = "http://localhost:" + this.port + "/hospital system/hospitalroom/";
+        this.baseUrl = "http://localhost:" + this.port + "/hospital-system/hospitalroom/";
     }
 
     @Test

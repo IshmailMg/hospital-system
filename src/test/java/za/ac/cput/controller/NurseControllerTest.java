@@ -47,7 +47,7 @@ class NurseControllerTest {
         assertNotNull(controller);
         this.nurse = NurseFactory.createNurse("12", "Jonno", "Moriarty");
         this.nurseService.save(nurse);
-        this.baseUrl = "http://localhost:" + this.port + "/hospital system/nurse/";
+        this.baseUrl = "http://localhost:" + this.port + "/hospital-system/nurse/";
     }
 
     @Test
