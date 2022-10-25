@@ -14,6 +14,4 @@ import za.ac.cput.domain.Appointment;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment,String>{
     Appointment save(Appointment appointment);
-
-
 }

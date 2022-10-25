@@ -1,48 +1,62 @@
 package za.ac.cput.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import za.ac.cput.domain.Supplier;
-import za.ac.cput.service.impl.SupplierServiceImpl;
+import za.ac.cput.factory.SupplierFactory;
+import za.ac.cput.service.SupplierService;
 
+import javax.lang.model.element.Name;
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Set;
 
-
-/*
-    SupplierController.java
-    Contoller for Supplier
-    Author: Nonzwakazi Mgxaji
-    Student number: 213181584
-    Date: 13 October 2022
-*/
 @RestController
-@RequestMapping("/supplier")
+@RequestMapping("hospital-system/supplier/")
+@Slf4j
 public class SupplierController {
-    private SupplierServiceImpl supplierService;
+    private final SupplierService service;
 
     @Autowired
-    public  SupplierController(SupplierServiceImpl supplierService) {
-        this.supplierService = supplierService;
-    }
-    @GetMapping("/find/{id}")
-    public Supplier find(@PathVariable String id) {
-        return this.supplierService.findById(id);
-    }
-    @PostMapping("/save")
-    public Supplier save(@RequestBody Supplier supplier) {
-        return this.supplierService.save(supplier);
-    }
-    //Delete method
-    @DeleteMapping("/delete/{id}")
-    public boolean delete(@PathVariable String id){
-        return this.supplierService.delete(id);
-    }
-    @GetMapping("/all")
-    public List<Supplier> getAll(){
-        return  this.supplierService.getAll();
+    public SupplierController(SupplierService service) {
+        this.service = service;
     }
 
+    @PostMapping("save")
+    public ResponseEntity<Supplier> save(@Valid @RequestBody Supplier supplier) {
+        log.info("Save request: {}", supplier);
+        Name validateName;
+        Supplier validatedSupplier;
+        try {
+            validatedSupplier = SupplierFactory.createSupplier(supplier.getSuppID(),supplier.getSuppAddress(),supplier.getSuppRegNum());
+        } catch (IllegalArgumentException ex) {
+            log.info("Save request error: {}", ex.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        Supplier saved = service.save(validatedSupplier);
+        return ResponseEntity.ok(saved);
+    }
 
+    @GetMapping("read/{id}")
+    public ResponseEntity<Supplier> read(@PathVariable String id) {
+        log.info("Read request: {}", id);
+        Supplier supplier = this.service.read(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(supplier);
+    }
 
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        log.info("Delete request{}", id);
+        this.service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("find-all")
+    public ResponseEntity<Set<Supplier>> getAll() {
+        Set<Supplier> suppliers = this.service.getAll();
+        return ResponseEntity.ok(suppliers);
+    }
 }

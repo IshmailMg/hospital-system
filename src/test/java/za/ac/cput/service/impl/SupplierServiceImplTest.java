@@ -48,14 +48,14 @@ public class SupplierServiceImplTest {
 
     @Test
     void b_read() {
-        Optional<Supplier> read = service.read(supplier1.getSupplierID());
+        Optional<Supplier> read = service.read(supplier1.getSuppID());
         assertAll(() -> assertTrue(read.isPresent()), () -> assertEquals(supplier1, read.get()));
         System.out.println("Read: " + read);
     }
 
     @Test
     void f_delete() {
-        boolean success = service.delete(supplier2.getSupplierID());
+        boolean success = service.delete(supplier2.getSuppID());
         assertTrue(success);
         System.out.println("Deleted: " + true);
     }

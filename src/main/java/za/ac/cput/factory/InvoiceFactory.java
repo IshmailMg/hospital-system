@@ -10,7 +10,7 @@ import za.ac.cput.util.StringHelper;
 */
 public class InvoiceFactory {
     public static Invoice createInvoice(String invoiceNum, Double invoiceAmount, String invoiceDate, String invoiceType) {
-       invoiceNum = StringHelper.generateUnqiueID();
+      StringHelper.checkStringParam("invoiceNum", invoiceNum);
         StringHelper.checkStringParam("invoiceType", invoiceType);
         StringHelper.checkStringParam("invoiceDate", invoiceDate);
       return new Invoice.Builder().invoiceNum(invoiceNum).invoiceAmount(invoiceAmount).invoiceType(invoiceType).invoiceDate(invoiceDate).build();

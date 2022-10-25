@@ -7,14 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import za.ac.cput.domain.MedicalAid;
+import za.ac.cput.factory.HospitalRoomFactory;
 import za.ac.cput.factory.MedicalAidFactory;
 import za.ac.cput.service.MedicalAidService;
 
 import javax.lang.model.element.Name;
 import javax.validation.Valid;
 import java.util.Set;
+
 @RestController
-@RequestMapping("hospital system/medicalaid/")
+@RequestMapping("hospital-system/medicalaid/")
 @Slf4j
 public class MedicalAidController {
     private final MedicalAidService service;
@@ -25,7 +27,7 @@ public class MedicalAidController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<MedicalAid> save(@Valid @RequestBody MedicalAid medicalAid){
+    public ResponseEntity<MedicalAid> save(@Valid @RequestBody MedicalAid medicalAid) {
         log.info("Save request: {}", medicalAid);
         Name validateName;
         MedicalAid validatedMedicalAid;
@@ -52,9 +54,11 @@ public class MedicalAidController {
         this.service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
     @GetMapping("find-all")
     public ResponseEntity<Set<MedicalAid>> getAll() {
-        Set<MedicalAid> medicalAidList = this.service.getAll();
-        return ResponseEntity.ok(medicalAidList);
+        Set<MedicalAid> medicalAids = this.service.getAll();
+        return ResponseEntity.ok(medicalAids);
     }
 }

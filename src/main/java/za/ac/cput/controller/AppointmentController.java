@@ -1,4 +1,5 @@
 package za.ac.cput.controller;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -6,50 +7,57 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import za.ac.cput.domain.Appointment;
-import za.ac.cput.domain.Doctor;
+import za.ac.cput.factory.AppointmentFactory;
 import za.ac.cput.service.AppointmentService;
 
+import javax.lang.model.element.Name;
+import javax.validation.Valid;
 import java.util.Set;
 
-
-/*
- AppointmentController.java
- this is contoller for Appointment
- Sinazo Mehlomakhulu(216076498)
- 13/10/2022
- */
 @RestController
-@RequestMapping(path  = "hospital-system/appointment")
+@RequestMapping("hospital-system/appointment/")
 @Slf4j
 public class AppointmentController {
-    private static AppointmentService appointmentService;
+    private final AppointmentService service;
 
     @Autowired
-    public AppointmentController(AppointmentService appointmentService) {
-        this.appointmentService = appointmentService;
+    public AppointmentController(AppointmentService service) {
+        this.service = service;
     }
 
     @PostMapping("save")
-    public Appointment createAppointment(@RequestBody Appointment appointment) {
-        return appointmentService.save(appointment);
-
+    public ResponseEntity<Appointment> save(@Valid @RequestBody Appointment appointment) {
+        log.info("Save request: {}", appointment);
+        Name validateName;
+        Appointment validatedAppointment;
+        try {
+            validatedAppointment = AppointmentFactory.createAppointment(appointment.getAppointmentId(), appointment.getAppointmentDate(), appointment.getAppointmentDuration(), appointment.getAppointmentTime());
+        } catch (IllegalArgumentException ex) {
+            log.info("Save request error: {}", ex.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        Appointment saved = service.save(validatedAppointment);
+        return ResponseEntity.ok(saved);
     }
 
     @GetMapping("read/{id}")
     public ResponseEntity<Appointment> read(@PathVariable String id) {
         log.info("Read request: {}", id);
-        Appointment appointment = this.appointmentService.read(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Appointment appointment = this.service.read(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return ResponseEntity.ok(appointment);
     }
 
     @DeleteMapping("delete/{id}")
-    public boolean delete(@RequestParam("id") String id) {
-        return appointmentService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        log.info("Delete request{}", id);
+        this.service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("get-all")
+
+    @GetMapping("find-all")
     public ResponseEntity<Set<Appointment>> getAll() {
-        Set<Appointment> appointment = this.appointmentService.getAll();
-        return ResponseEntity.ok(appointment);
+        Set<Appointment> appointments = this.service.getAll();
+        return ResponseEntity.ok(appointments);
     }
 }

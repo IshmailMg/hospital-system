@@ -90,7 +90,7 @@ class HospitalRoomControllerTest {
                 .getForEntity(url, HospitalRoom[].class);
         System.out.println("Show All:");
         System.out.println(Arrays.asList(Objects.requireNonNull(response.getBody())));
-        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(22, response.getBody().length));
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(1, response.getBody().length));
     }
 
 }

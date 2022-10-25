@@ -7,20 +7,19 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import za.ac.cput.domain.Appointment;
-import za.ac.cput.factory.AppointmentFactory;
-import za.ac.cput.service.AppointmentService;
+import za.ac.cput.domain.Medicine;
+import za.ac.cput.factory.MedicineFactory;
+import za.ac.cput.service.MedicineService;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//Sinazo Mehlomakhulu(216076498)
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AppointmentControllerTest {
+class MedicineControllerTest {
     private String baseUrl;
     @LocalServerPort
     private int port;
@@ -28,27 +27,27 @@ class AppointmentControllerTest {
     private TestRestTemplate restTemplate;
 
     @Autowired
-    private AppointmentController controller;
+    private MedicineController controller;
 
     @Autowired
-    private AppointmentService service;
-    private Appointment appointment;
+    private MedicineService service;
+    private Medicine medicine;
 
     @BeforeEach
     void setUp() {
         assertNotNull(controller);
-        this.appointment = AppointmentFactory.createAppointment("12", "23 November 2022","30Min","10:00");
-        this.service.save(appointment);
-        this.baseUrl = "http://localhost:" + this.port + "/hospital-system/appointment/";
+        this.medicine = MedicineFactory.createMedicine("12124341", "300ml","Drug");
+        this.service.save(medicine);
+        this.baseUrl = "http://localhost:" + this.port + "/hospital-system/medicine/";
     }
     @Order(1)
     @Test
     void save() {
         String url = baseUrl + "save";
         System.out.println(url);
-        ResponseEntity<Appointment> response = this.restTemplate
+        ResponseEntity<Medicine> response = this.restTemplate
                 .withBasicAuth("admin-user", "65ff7492d30")
-                .postForEntity(url, this.appointment, Appointment.class);
+                .postForEntity(url, this.medicine, Medicine.class);
         System.out.println(response);
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
@@ -56,11 +55,11 @@ class AppointmentControllerTest {
     @Order(2)
     @Test
     public void read() {
-        String url = baseUrl + "read/" + this.appointment.getAppointmentId();
+        String url = baseUrl + "read/" + this.medicine.getMedicineId();
         System.out.println(url);
-        ResponseEntity<Appointment> response = this.restTemplate
+        ResponseEntity<Medicine> response = this.restTemplate
                 .withBasicAuth("admin-user", "65ff7492d30")
-                .getForEntity(url, Appointment.class);
+                .getForEntity(url, Medicine.class);
         System.out.println(response);
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
@@ -68,7 +67,7 @@ class AppointmentControllerTest {
     @Order(4)
     @Test
     public void delete() {
-        String url = baseUrl + "delete/" + this.appointment.getAppointmentId();
+        String url = baseUrl + "delete/" + this.medicine.getMedicineId();
         System.out.println(url);
         this.restTemplate.delete(url);
     }
@@ -78,12 +77,12 @@ class AppointmentControllerTest {
     public void findAll() {
         String url = baseUrl + "find-all";
         System.out.println(url);
-        ResponseEntity<Appointment[]> response = this.restTemplate
+        ResponseEntity<Medicine[]> response = this.restTemplate
                 .withBasicAuth("client-user", "1253208465b")
-                .getForEntity(url, Appointment[].class);
+                .getForEntity(url, Medicine[].class);
         System.out.println("Show All:");
         System.out.println(Arrays.asList(Objects.requireNonNull(response.getBody())));
-        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(3, response.getBody().length));
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(1, response.getBody().length));
     }
 
 }

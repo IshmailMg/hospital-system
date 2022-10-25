@@ -88,7 +88,7 @@ class NurseControllerTest {
                 .withBasicAuth("admin-user", "65ff7492d30")
                 .getForEntity(url, Nurse[].class);
         System.out.println(Arrays.asList(response.getBody()));
-        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(17, response.getBody().length));
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(1, response.getBody().length));
     }
 
 }

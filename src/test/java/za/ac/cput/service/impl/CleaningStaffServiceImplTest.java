@@ -1,77 +1,62 @@
 package za.ac.cput.service.impl;
 
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import za.ac.cput.domain.Appointment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.cput.domain.CleaningStaff;
-import za.ac.cput.repository.AppointmentRepository;
-import za.ac.cput.repository.CleaningStaffRepository;
+import za.ac.cput.factory.CleaningStaffFactory;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-//Sinazo Mehlomakhulu(216076498)
-@ExtendWith(MockitoExtension.class)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
-class CleaningStaffServiceImplTest {
-    @Mock
-    private CleaningStaffRepository repository;
+@TestMethodOrder(MethodOrderer.MethodName.class)
+@SpringBootTest
+public class CleaningStaffServiceImplTest {
+    private static final CleaningStaff cleaningStaff1 = CleaningStaffFactory.createCleaningStaff("e33242343", "David","Langerhout");
+    private static final CleaningStaff cleaningStaff2 = CleaningStaffFactory.createCleaningStaff("e33sef343", "Tania","Zania");
+    private static final CleaningStaff cleaningStaff3 = CleaningStaffFactory.createCleaningStaff("e33242343", "Patricia","Hout");
 
-    private static CleaningStaff cleaningStaff1,cleaningStaff2;
-    CleaningStaffServiceImpl staffService;
+    @Autowired
+    private CleaningStaffServiceImpl service;
 
-    @Order(1)
     @Test
-    void save() {
-        staffService = new CleaningStaffServiceImpl(repository);
-        cleaningStaff1 = new CleaningStaff.Builder().employeeId("8909240759089").employeeFirstName("Andrew").employeeLastName("Mason").build();
-        cleaningStaff2 = new CleaningStaff.Builder().employeeId("9307230769080").employeeFirstName("Lunathi").employeeLastName("Kama").build();
-        repository.save(cleaningStaff1);
-        repository.save(cleaningStaff2);
+    public void a_save() {
+        System.out.println("Created: ");
+        CleaningStaff created1 = service.save(cleaningStaff1);
+        assertNotNull(created1);
+        System.out.println(created1);
 
-        assertAll(
-                ()-> assertNotNull(cleaningStaff1.getEmployeeId()),
-                ()-> assertNotNull(cleaningStaff2.getEmployeeId()),
-                ()-> assertNotNull(cleaningStaff1.getEmployeeFirstName()),
-                ()-> assertNotNull(cleaningStaff2.getEmployeeFirstName()));
-        System.out.println("Appointment has been added");
+        CleaningStaff created2 = service.save(cleaningStaff2);
+        assertNotNull(created2);
+        System.out.println(created2);
+
+        CleaningStaff created3 = service.save(cleaningStaff3);
+        assertNotNull(created3);
+        System.out.println(created3);
+
     }
-@Order(2)
+
     @Test
-    void read() {
-    repository.getReferenceById(cleaningStaff1.getEmployeeId());
-    repository.getReferenceById((cleaningStaff2.getEmployeeId()));
-    assertAll(
-            ()-> assertNotNull(cleaningStaff1.getEmployeeId()),
-            ()-> assertNotNull(cleaningStaff2.getEmployeeId()),
-            ()-> assertNotSame(cleaningStaff1.getEmployeeId(),cleaningStaff2.getEmployeeId()),
-            ()-> assertNotEquals(cleaningStaff1.getEmployeeId(),cleaningStaff2.getEmployeeId())
-    );
-    System.out.println(cleaningStaff1.toString());
-    System.out.println(cleaningStaff2.toString());
+    public void b_read() {
+        Optional<CleaningStaff> read = service.read(cleaningStaff1.getEmployeeId());
+        assertAll(() -> assertTrue(read.isPresent()), () -> assertEquals(cleaningStaff1, read.get()));
+        System.out.println("Read: " + read);
     }
-@Order(3)
-@Test
-void findAll(){
-    System.out.println(repository.findAll());
-}
-@Order(4)
+
     @Test
-    void delete() {
-        repository.deleteById(cleaningStaff1.getEmployeeId());
-        repository.deleteById(cleaningStaff2.getEmployeeId());
+    public void f_delete() {
+        boolean success = service.delete(cleaningStaff3.getEmployeeId());
+        assertFalse(success);
+        System.out.println("Deleted");
+    }
 
-        assertAll(
-                ()->assertNotNull(cleaningStaff1.getEmployeeId()),
-                ()->assertNotNull(cleaningStaff2.getEmployeeId()),
-                ()-> assertNotSame(cleaningStaff1.getEmployeeId(), cleaningStaff2.getEmployeeId()),
-                ()-> assertNotEquals(cleaningStaff1.getEmployeeId(),cleaningStaff2.getEmployeeId())
-        );
-
+    @Test
+    public void d_getALl() {
+        System.out.println("Get All");
+        System.out.println(service.getAll());
     }
 
 }

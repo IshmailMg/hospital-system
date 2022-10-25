@@ -19,10 +19,12 @@ import java.util.Objects;
 public class CleaningStaff implements Serializable {
 
     @Id
+    @NotNull
     private String employeeId;
 
     @NotNull
     private String employeeFirstName;
+    @NotNull
     private String employeeLastName;
 
     public CleaningStaff(Builder builder) {
@@ -34,6 +36,7 @@ public class CleaningStaff implements Serializable {
 
     public CleaningStaff() {
     }
+
     public String getEmployeeId() {
         return employeeId;
     }
@@ -60,19 +63,19 @@ public class CleaningStaff implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CleaningStaff that = (CleaningStaff) o;
-        return employeeLastName == that.employeeFirstName&& employeeId.equals(that.employeeId);
+        return Objects.equals(employeeId, that.employeeId) && Objects.equals(employeeFirstName, that.employeeFirstName) && Objects.equals(employeeLastName, that.employeeLastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeId,employeeFirstName,employeeLastName);
+        return Objects.hash(employeeId, employeeFirstName, employeeLastName);
     }
-
 
     public static class Builder {
         private String employeeId;
         private String employeeFirstName;
         private String employeeLastName;
+
         public Builder employeeId (String employeeId){
             this.employeeId = employeeId;
             return this;

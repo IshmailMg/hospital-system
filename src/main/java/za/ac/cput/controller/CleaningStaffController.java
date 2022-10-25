@@ -7,20 +7,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import za.ac.cput.domain.CleaningStaff;
-import za.ac.cput.domain.HospitalRoom;
+import za.ac.cput.factory.CleaningStaffFactory;
 import za.ac.cput.service.CleaningStaffService;
 
+import javax.lang.model.element.Name;
+import javax.validation.Valid;
 import java.util.Set;
 
-
-/*
-CleaningStaffController.java
-this is Cleaning staff controller
-Sinazo Mehlomkhulu (216076498)
-Date : 11 October 2022
- */
 @RestController
-@RequestMapping(path  = "hospital-system/cleaningStaff")
+@RequestMapping("hospital-system/cleaningStaff/")
 @Slf4j
 public class CleaningStaffController {
     private final CleaningStaffService service;
@@ -31,9 +26,18 @@ public class CleaningStaffController {
     }
 
     @PostMapping("save")
-    public CleaningStaff createCleaningStaff(@RequestBody CleaningStaff cleaningStaff) {
-        return service.save(cleaningStaff);
-
+    public ResponseEntity<CleaningStaff> save(@Valid @RequestBody CleaningStaff cleaningStaff) {
+        log.info("Save request: {}", cleaningStaff);
+        Name validateName;
+        CleaningStaff validatedCleaningStaff;
+        try {
+            validatedCleaningStaff = CleaningStaffFactory.createCleaningStaff(cleaningStaff.getEmployeeId(), cleaningStaff.getEmployeeFirstName(), cleaningStaff.getEmployeeLastName());
+        } catch (IllegalArgumentException ex) {
+            log.info("Save request error: {}", ex.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        CleaningStaff saved = service.save(validatedCleaningStaff);
+        return ResponseEntity.ok(saved);
     }
 
     @GetMapping("read/{id}")
@@ -44,15 +48,16 @@ public class CleaningStaffController {
     }
 
     @DeleteMapping("delete/{id}")
-    public boolean delete(@RequestParam("id") String id) {
-        return service.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        log.info("Delete request{}", id);
+        this.service.delete(id);
+        return ResponseEntity.noContent().build();
     }
+
 
     @GetMapping("find-all")
     public ResponseEntity<Set<CleaningStaff>> getAll() {
-        Set<CleaningStaff> cleaningStaffList = this.service.getAll();
-        return ResponseEntity.ok(cleaningStaffList);
+        Set<CleaningStaff> cleaningStaffs = this.service.getAll();
+        return ResponseEntity.ok(cleaningStaffs);
     }
 }
-
-

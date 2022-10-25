@@ -2,9 +2,12 @@ package za.ac.cput.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import za.ac.cput.domain.HospitalRoom;
 import za.ac.cput.domain.Supplier;
 import za.ac.cput.repository.SupplierRepository;
 import za.ac.cput.service.SupplierService;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,8 +30,6 @@ public class SupplierServiceImpl implements SupplierService {
         this.supplierRepository = supplierRepository;
     }
 
-
-
     public Supplier getSupplier(String id) {
         return supplierRepository.findById(id).orElse(null);
     }
@@ -39,8 +40,8 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
-    public List<Supplier> getAll() {
-        return this.supplierRepository.findAll();
+    public Set<Supplier> getAll() {
+        return new HashSet<>(this.supplierRepository.findAll());
     }
 
     @Override
@@ -48,11 +49,9 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.findById(id).orElse(new Supplier());
     }
 
-
-
     @Override
-    public Optional<Supplier> read(String s) {
-        return Optional.empty();
+    public Optional<Supplier> read(String id) {
+        return this.supplierRepository.findById(id);
     }
 
     @Override

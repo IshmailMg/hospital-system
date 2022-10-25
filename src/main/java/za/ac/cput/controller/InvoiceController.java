@@ -1,20 +1,10 @@
 package za.ac.cput.controller;
 
-
-/*
-    InvoiceController.java
-    Controller for the Invoice
-    Author: Shina Kara (219333181)
-    Date: 7 October 2022
-*/
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import za.ac.cput.domain.Invoice;
 import za.ac.cput.factory.InvoiceFactory;
@@ -25,7 +15,7 @@ import javax.validation.Valid;
 import java.util.Set;
 
 @RestController
-@RequestMapping("hospital system/invoice/")
+@RequestMapping("hospital-system/invoice/")
 @Slf4j
 public class InvoiceController {
     private final InvoiceService service;
@@ -36,12 +26,12 @@ public class InvoiceController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<Invoice> save(@Valid @RequestBody Invoice invoice){
+    public ResponseEntity<Invoice> save(@Valid @RequestBody Invoice invoice) {
         log.info("Save request: {}", invoice);
         Name validateName;
         Invoice validatedInvoice;
         try {
-            validatedInvoice = InvoiceFactory.createInvoice(invoice.getInvoiceNum(), invoice.getInvoiceAmount(), invoice.getInvoiceDate(), invoice.getInvoiceType());
+            validatedInvoice = InvoiceFactory.createInvoice(invoice.getInvoiceNum(), invoice.getInvoiceAmount(), invoice.getInvoiceType(), invoice.getInvoiceDate());
         } catch (IllegalArgumentException ex) {
             log.info("Save request error: {}", ex.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -63,9 +53,11 @@ public class InvoiceController {
         this.service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
     @GetMapping("find-all")
     public ResponseEntity<Set<Invoice>> getAll() {
-        Set<Invoice> invoiceList = this.service.getAll();
-        return ResponseEntity.ok(invoiceList);
+        Set<Invoice> invoices = this.service.getAll();
+        return ResponseEntity.ok(invoices);
     }
 }

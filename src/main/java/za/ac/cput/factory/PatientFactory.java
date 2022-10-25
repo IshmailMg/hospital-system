@@ -10,7 +10,11 @@ import za.ac.cput.util.StringHelper;
 */
 public class PatientFactory {
     public static Patient createPatient(String patIdNum, String patFirstName, String patLastName, String patAddress, String patCellNum){
-        patIdNum = StringHelper.generateUnqiueID();
+       StringHelper.checkStringParam("patIdNum",patIdNum);
+       StringHelper.checkStringParam("patFirstName",patFirstName);
+       StringHelper.checkStringParam("patLastName",patLastName);
+       StringHelper.checkStringParam("patAddress",patAddress);
+       StringHelper.checkStringParam("patCellNum",patCellNum);
         return new Patient.Builder().setPatIdNum(patIdNum).setPatFirstName(patFirstName).setPatLastName(patLastName)
                 .setPatAddress(patAddress).setPatCellNum(patCellNum).build();
     }

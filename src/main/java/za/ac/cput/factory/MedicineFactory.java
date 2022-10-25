@@ -10,7 +10,9 @@ import za.ac.cput.util.StringHelper;
 */
 public class MedicineFactory {
     public static Medicine createMedicine(String medicineId, String medicineAmount, String medicineType) {
-        medicineId = StringHelper.generateUnqiueID();
+        StringHelper.checkStringParam("medicineId", medicineId);
+        StringHelper.checkStringParam("medicineAmount", medicineAmount);
+        StringHelper.checkStringParam("medicineType", medicineType);
         return new Medicine.Builder().setMedicineId(medicineId).setMedicineAmount(medicineAmount).setMedicineType(medicineType).build();
     }
 }

@@ -2,7 +2,6 @@ package za.ac.cput.service;
 
 import za.ac.cput.domain.Supplier;
 
-import java.util.List;
 import java.util.Set;
 
 /*
@@ -16,5 +15,5 @@ import java.util.Set;
 public interface SupplierService extends IService<Supplier, String>{
     Supplier findById(String id);
 
-    List<Supplier> getAll();
+    Set<Supplier> getAll();
 }
