@@ -21,7 +21,7 @@ public class SecretaryController {
         this.secretaryService = secretaryService;
     }
 
-    @PostMapping
+    @PostMapping("create")
     public Secretary createSecretary(@RequestBody Secretary secretary)
     {
         return secretaryService.save(secretary);
@@ -33,13 +33,13 @@ public class SecretaryController {
         return secretaryService.get(id);
     }
 
-    @DeleteMapping
+    @DeleteMapping("delete/{id}")
     public boolean deleteSecretary(@RequestParam("id") String id)
     {
         return secretaryService.delete(id);
     }
 
-    @GetMapping
+    @GetMapping("get-all")
     public List<Secretary> listAllSecretaries()
     {
         return secretaryService.listSecretaries();

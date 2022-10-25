@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 */
 @Service
 public class MedicalAidServiceImpl implements MedicalAidService {
+
     private final MedicalAidRepository repository;
 
     @Autowired
@@ -33,7 +34,7 @@ public class MedicalAidServiceImpl implements MedicalAidService {
 
     @Override
     public Optional<MedicalAid> read(String id) {
-        return Optional.ofNullable(this.repository.findById(id).orElse(null));
+        return this.repository.findById(id) ;
     }
 
     @Override

@@ -62,7 +62,6 @@ public class DoctorControllerTest {
                 .withBasicAuth("user", "user123")
                 .getForEntity(url, Doctor[].class);
         assertSame(HttpStatus.OK, response.getStatusCode());
-        //assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(17, response.getBody().length));
     }
 
 }
