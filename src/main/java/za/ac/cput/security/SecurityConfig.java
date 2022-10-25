@@ -62,6 +62,12 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/hospital-system/doctor/get-all").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.DELETE, "/hospital-system/doctor/delete/{id}").hasRole("ADMIN")
 
+                //Path matcher for the Driver System
+                .antMatchers(HttpMethod.POST, "/**/secretary/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**/secretary/delete/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/secretary/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/secretary/get-all").hasAnyRole("USER", "ADMIN")
+
                 //Path matcher for cleaning staff
                 .antMatchers(HttpMethod.POST, "/hospital-system/cleaningStaff/save").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/hospital-system/cleaningStaff/read/{id}").hasRole("ADMIN")

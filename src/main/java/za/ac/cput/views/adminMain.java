@@ -1,7 +1,5 @@
 package za.ac.cput.views;
 
-import netscape.javascript.JSObject;
-import org.aspectj.apache.bcel.classfile.Utility;
 import org.json.JSONObject;
 import za.ac.cput.security.HttpConnect;
 
@@ -9,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import za.ac.cput.util.StringHelper;
 
 public class adminMain {
 
