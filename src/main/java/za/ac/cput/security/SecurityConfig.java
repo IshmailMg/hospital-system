@@ -104,7 +104,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/**/invoice/read/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/**/invoice/find-all").hasAnyRole("USER", "ADMIN")
 
-                //Path matcher for the Invoice System
+                //Path matcher for the Medical Aid System
                 .antMatchers(HttpMethod.POST, "/**/medicalaid/save").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/**/medicalaid/delete/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/**/medicalaid/read/{id}").hasRole("ADMIN")

@@ -36,7 +36,7 @@ class DoctorControllerTest {
     @BeforeEach
     void setUp() {
         assertNotNull(controller);
-        this.doctor = DoctorFactory.createDoctor("1213131", "David", "Mane", "04924323423");
+        this.doctor = DoctorFactory.createDoctor("121", "David", "Mane", "04924323423");
         this.service.save(doctor);
         this.baseUrl = "http://localhost:" + this.port + "/hospital-system/doctor/";
     }
