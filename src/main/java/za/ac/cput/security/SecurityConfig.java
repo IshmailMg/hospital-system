@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder encoder(){
-        //Encodes our passwords for a more secure Login system
+        //Encodes our passwords for a more secure login system
         return new BCryptPasswordEncoder();
     }
 
@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .antMatchers(HttpMethod.POST, "/**/hospitalroom/save").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/**/hospitalroom/delete/{id}").hasRole("ADMIN")
+                //changed this because only the admin should read specific IDs
                 .antMatchers(HttpMethod.GET, "/**/hospitalroom/read/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/**/hospitalroom/find-all").hasAnyRole("USER", "ADMIN")
 
@@ -121,6 +122,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.DELETE, "/**/patient/delete/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/**/patient/read/{id}").hasRole("ADMIN")
                 .antMatchers(HttpMethod.GET, "/**/patient/find-all").hasAnyRole("USER", "ADMIN")
+
 
 
 

@@ -8,6 +8,8 @@ import lombok.ToString;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.Objects;
 
 /*
     Medicine.java
@@ -16,11 +18,8 @@ import javax.persistence.Table;
     Date: 05 August 2022
 */
 @Entity
-@Getter
-@ToString
-@NoArgsConstructor
 @Table(name = "tbl_medicine")
-public class Medicine {
+public class Medicine implements Serializable {
 
     @Id
     private String medicineId;
@@ -28,23 +27,46 @@ public class Medicine {
     private String medicineAmount;
     private String medicineType;
 
-    private Medicine(Builder builder) {
+    public Medicine(Builder builder) {
         this.medicineId = builder.medicineId;
         this.medicineAmount = builder.medicineAmount;
         this.medicineType = builder.medicineType;
     }
+    public Medicine(){}
+
+    public String getMedicineId(){return medicineId;}
+
+    @Override
+    public String toString() {
+        return "Medicine{" +
+                "medicineId='" + medicineId + '\'' +
+                ", medicineAmount='" + medicineAmount + '\'' +
+                ", medicineType='" + medicineType + '\'' +
+                '}';
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Medicine medicine = (Medicine) o;
+        return medicineId.equals(medicine.medicineId) && medicineAmount.equals(medicine.medicineAmount)
+                && medicineType.equals(medicine.medicineType);
+    }
+    public int hashCode(){
+        return Objects.hash(medicineId, medicineAmount,medicineType);
+    }
     public static class Builder {
         private String medicineId,medicineAmount,medicineType;
 
-    public Builder setMedicineId(String medicineId) {
+    public Builder medicineId(String medicineId) {
         this.medicineId = medicineId;
         return this;
     }
-    public Builder setMedicineAmount(String medicineAmount){
+    public Builder medicineAmount(String medicineAmount){
         this.medicineAmount = medicineAmount;
         return this;
     }
-    public Builder setMedicineType(String medicineType) {
+    public Builder medicineType(String medicineType) {
         this.medicineType = medicineType;
         return this;
     }

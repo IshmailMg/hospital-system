@@ -8,20 +8,23 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import za.ac.cput.domain.CleaningStaff;
 import za.ac.cput.factory.CleaningStaffFactory;
+import za.ac.cput.domain.Driver;
+import za.ac.cput.domain.HospitalRoom;
 import za.ac.cput.service.CleaningStaffService;
-
+import za.ac.cput.service.impl.CleaningStaffServiceImpl;
 import javax.lang.model.element.Name;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
 @RestController
 @RequestMapping("hospital-system/cleaningStaff/")
 @Slf4j
 public class CleaningStaffController {
-    private final CleaningStaffService service;
+    private CleaningStaffServiceImpl service;
 
     @Autowired
-    public CleaningStaffController(CleaningStaffService service) {
+    public CleaningStaffController(CleaningStaffServiceImpl service) {
         this.service = service;
     }
 
@@ -46,7 +49,7 @@ public class CleaningStaffController {
         CleaningStaff cleaningStaff = this.service.read(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return ResponseEntity.ok(cleaningStaff);
     }
-
+    
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         log.info("Delete request{}", id);
@@ -59,5 +62,10 @@ public class CleaningStaffController {
     public ResponseEntity<Set<CleaningStaff>> getAll() {
         Set<CleaningStaff> cleaningStaffs = this.service.getAll();
         return ResponseEntity.ok(cleaningStaffs);
+        
     }
+
+    @GetMapping("/all")
+    public List<CleaningStaff> getAll(){return this.service.getAll();}
+
 }

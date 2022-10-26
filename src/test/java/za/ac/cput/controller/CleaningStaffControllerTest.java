@@ -12,8 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import za.ac.cput.domain.CleaningStaff;
 import za.ac.cput.factory.CleaningStaffFactory;
-import za.ac.cput.service.CleaningStaffService;
-
+import za.ac.cput.service.impl.CleaningStaffServiceImpl;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -28,10 +27,8 @@ class CleaningStaffControllerTest {
     private int port;
     @Autowired
     private TestRestTemplate restTemplate;
-
     @Autowired
     private CleaningStaffController controller;
-
     @Autowired
     private CleaningStaffService cleaningStaffService;
 

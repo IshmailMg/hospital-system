@@ -1,8 +1,10 @@
 package za.ac.cput.service.impl;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.CleaningStaff;
+import za.ac.cput.domain.Driver;
 import za.ac.cput.repository.CleaningStaffRepository;
 import za.ac.cput.service.CleaningStaffService;
 
@@ -38,9 +40,18 @@ public class CleaningStaffServiceImpl implements CleaningStaffService {
         }
         return false;
     }
+@Override
+    public List<CleaningStaff> getAll() {
+        return this.repository.findAll();
+    }
+    @Override
+    public CleaningStaff findById(String id) {
+        return repository.findById(id).orElse(new CleaningStaff());
+    }
 
     @Override
     public Set<CleaningStaff> getAll() {
         return this.repository.findAll().stream().collect(Collectors.toSet());
     }
+
 }

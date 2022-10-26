@@ -1,13 +1,13 @@
 package za.ac.cput.domain;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.Objects;
+
 /*
     Patient.java
     Entity: Patient
@@ -15,11 +15,8 @@ import javax.persistence.Table;
     Date: 05 August 2022
 */
 @Entity
-@ToString
-@Getter
-@NoArgsConstructor
 @Table(name = "tbl_patient")
-public class Patient {
+public class Patient implements Serializable {
 
     @Id
     private String patIdNum;
@@ -29,38 +26,63 @@ public class Patient {
     private String patAddress;
     private String patCellNum;
 
-    private Patient(Builder builder) {
+    public Patient(Builder builder) {
         this.patIdNum = builder.patIdNum;
         this.patFirstName = builder.patFirstName;
         this.patLastName = builder.patLastName;
         this.patAddress = builder.patAddress;
         this.patCellNum = builder.patCellNum;
     }
+    public Patient(){}
+
+    public String getPatIdNum() {return patIdNum;}
+
+    @Override
+    public String toString() {
+        return "Patient{" +
+                "patIdNum='" + patIdNum + '\'' +
+                ", patFirstName='" + patFirstName + '\'' +
+                ", patLastName='" + patLastName + '\'' +
+                ", patAddress='" + patAddress + '\'' +
+                ", patCellNum='" + patCellNum + '\'' +
+                '}';
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Patient patient = (Patient) o;
+        return patIdNum.equals(patient.patIdNum) && patFirstName.equals(patient.patFirstName) && patLastName.equals(patient.patLastName)
+                && patAddress.equals(patient.patAddress) && patCellNum.equals(patient.patCellNum);}
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(patIdNum,patFirstName,patLastName,patAddress,patCellNum);}
 
     public static class Builder {
         private String patIdNum, patFirstName, patLastName, patAddress, patCellNum;
 
-        public Builder setPatIdNum(String patIdNum) {
+        public Builder patIdNum(String patIdNum) {
             this.patIdNum = patIdNum;
             return this;
         }
 
-        public Builder setPatFirstName(String patFirstName) {
+        public Builder patFirstName(String patFirstName) {
             this.patFirstName = patFirstName;
             return this;
         }
 
-        public Builder setPatLastName(String patLastName) {
+        public Builder patLastName(String patLastName) {
             this.patLastName = patLastName;
             return this;
         }
 
-        public Builder setPatAddress(String patAddress) {
+        public Builder patAddress(String patAddress) {
             this.patAddress = patAddress;
             return this;
         }
 
-        public Builder setPatCellNum(String patCellNum) {
+        public Builder patCellNum(String patCellNum) {
             this.patCellNum = patCellNum;
             return this;
         }

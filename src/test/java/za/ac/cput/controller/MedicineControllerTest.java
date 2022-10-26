@@ -1,5 +1,6 @@
 package za.ac.cput.controller;
 
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -60,6 +61,7 @@ class MedicineControllerTest {
         ResponseEntity<Medicine> response = this.restTemplate
                 .withBasicAuth("admin-user", "65ff7492d30")
                 .getForEntity(url, Medicine.class);
+
         System.out.println(response);
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
@@ -84,5 +86,4 @@ class MedicineControllerTest {
         System.out.println(Arrays.asList(Objects.requireNonNull(response.getBody())));
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(1, response.getBody().length));
     }
-
 }

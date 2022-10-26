@@ -8,7 +8,9 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import za.ac.cput.domain.Appointment;
+import za.ac.cput.domain.CleaningStaff;
 import za.ac.cput.factory.AppointmentFactory;
+import za.ac.cput.factory.CleaningStaffFactory;
 import za.ac.cput.service.AppointmentService;
 
 import java.util.Arrays;
@@ -26,12 +28,11 @@ class AppointmentControllerTest {
     private int port;
     @Autowired
     private TestRestTemplate restTemplate;
-
     @Autowired
     private AppointmentController controller;
-
     @Autowired
-    private AppointmentService service;
+    private AppointmentServiceImpl service;
+
     private Appointment appointment;
 
     @BeforeEach
@@ -41,9 +42,9 @@ class AppointmentControllerTest {
         this.service.save(appointment);
         this.baseUrl = "http://localhost:" + this.port + "/hospital-system/appointment/";
     }
-    @Order(1)
+
     @Test
-    void save() {
+    void a_save() {
         String url = baseUrl + "save";
         System.out.println(url);
         ResponseEntity<Appointment> response = this.restTemplate
@@ -65,7 +66,7 @@ class AppointmentControllerTest {
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
 
-    @Order(4)
+
     @Test
     public void delete() {
         String url = baseUrl + "delete/" + this.appointment.getAppointmentId();
@@ -75,8 +76,8 @@ class AppointmentControllerTest {
 
     @Order(3)
     @Test
-    public void findAll() {
-        String url = baseUrl + "find-all";
+    public void d_findAll() {
+        String url = baseUrl + "all/";
         System.out.println(url);
         ResponseEntity<Appointment[]> response = this.restTemplate
                 .withBasicAuth("client-user", "1253208465b")
@@ -86,4 +87,9 @@ class AppointmentControllerTest {
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(3, response.getBody().length));
     }
 
+
 }
+
+
+
+

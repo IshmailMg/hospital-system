@@ -2,10 +2,7 @@ package za.ac.cput.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import za.ac.cput.domain.Appointment;
 import za.ac.cput.factory.AppointmentFactory;
 import za.ac.cput.service.AppointmentService;
@@ -13,6 +10,8 @@ import za.ac.cput.service.AppointmentService;
 import javax.lang.model.element.Name;
 import javax.validation.Valid;
 import java.util.Set;
+import za.ac.cput.service.impl.AppointmentServiceImpl;
+import java.util.List;
 
 @RestController
 @RequestMapping("hospital-system/appointment/")

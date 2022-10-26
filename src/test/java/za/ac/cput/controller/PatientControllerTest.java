@@ -15,10 +15,9 @@ import za.ac.cput.factory.PatientFactory;
 import za.ac.cput.service.PatientService;
 
 import java.util.Arrays;
+
 import java.util.Objects;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -86,5 +85,4 @@ class PatientControllerTest {
         System.out.println(Arrays.asList(Objects.requireNonNull(response.getBody())));
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(1, response.getBody().length));
     }
-
 }

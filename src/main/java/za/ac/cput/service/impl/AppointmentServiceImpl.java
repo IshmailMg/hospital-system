@@ -2,9 +2,11 @@ package za.ac.cput.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import za.ac.cput.domain.Appointment;
+import za.ac.cput.domain.CleaningStaff;
 import za.ac.cput.repository.AppointmentRepository;
 import za.ac.cput.service.AppointmentService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,8 +41,18 @@ public class AppointmentServiceImpl implements AppointmentService {
         return false;
     }
 
-    public Set<Appointment> getAll() {
-        return this.repository.findAll().stream().collect(Collectors.toSet());
+    @Override
+    public List<Appointment> getAll() {
+        return this.repository.findAll();
+    }
+    @Override
+    public Appointment findById(String id) {
+        return repository.findById(id).orElse(new Appointment());
+    }
+
+    public List listAppointment()
+    {
+        return repository.findAll().stream().collect(Collectors.toList());
     }
 
 
