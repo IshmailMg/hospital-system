@@ -1,68 +1,53 @@
 package za.ac.cput.domain;
 
-import javax.persistence.Column;
+import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+import javax.persistence.Table;
 import java.util.Objects;
+
 /*
     MedicalAid.java
     Entity for the Medical Aid
-    Author: Shina Kara (219333181).
+    Author: Shina Kara (219333181)
     Date: 4 August 2022
 */
 @Entity
-public class MedicalAid implements Serializable {
-    @NotNull
+@Table(name = "tbl_medical_aid")
+public class MedicalAid {
+
     @Id
-    @Column(name = "medical_num")
     private String medicalNum;
     @NotNull
     private String medicalName;
     @NotNull
     private String medicAddr;
 
-    public MedicalAid() {
-    }
 
-    private MedicalAid(Builder builder) {
+    public MedicalAid(Builder builder) {
         this.medicalNum = builder.medicalNum;
         this.medicalName = builder.medicalName;
-        this.medicAddr = builder.medicAddr;
+        this.medicAddr = builder.medicalAddr;
+    }
+    public MedicalAid() {
+
     }
 
-    @Override
-    public String toString() {
-        return "MedicalAid{" +
-                "medicalNum='" + medicalNum + '\'' +
-                ", medicalName='" + medicalName + '\'' +
-                ", medicAddr='" + medicAddr + '\'' +
-                '}';
-    }
 
     public String getMedicalNum() {
         return medicalNum;
-    }
-
-    public void setMedicalNum(String medicalNum) {
-        this.medicalNum = medicalNum;
     }
 
     public String getMedicalName() {
         return medicalName;
     }
 
-    public void setMedicalName(String medicalName) {
-        this.medicalName = medicalName;
-    }
-
     public String getMedicAddr() {
         return medicAddr;
-    }
-
-    public void setMedicAddr(String medicAddr) {
-        this.medicAddr = medicAddr;
     }
 
     @Override
@@ -78,38 +63,49 @@ public class MedicalAid implements Serializable {
         return Objects.hash(medicalNum, medicalName, medicAddr);
     }
 
+    @Override
+    public String toString() {
+        return "MedicalAid{" +
+                "medicalNum='" + medicalNum + '\'' +
+                ", medicalName='" + medicalName + '\'' +
+                ", medicAddr='" + medicAddr + '\'' +
+                '}';
+    }
+
     public static class Builder {
         private String medicalNum;
         private String medicalName;
-        private String medicAddr;
+        private String medicalAddr;
 
-
-        public Builder setMedicalNum(String medicalNum) {
+        public MedicalAid.Builder medicalNum(String medicalNum) {
             this.medicalNum = medicalNum;
             return this;
         }
 
-        public Builder setMedicalName(String medicalName) {
+        public MedicalAid.Builder medicalName(String medicalName) {
             this.medicalName = medicalName;
             return this;
         }
 
-        public Builder setMedicAddr(String medicAddr) {
-            this.medicAddr = medicAddr;
+        public MedicalAid.Builder medicalAddr(String medicalAddr) {
+            this.medicalAddr = medicalAddr;
             return this;
         }
 
 
-        public Builder copy(MedicalAid medicalAid) {
+
+        public MedicalAid.Builder copy(MedicalAid medicalAid) {
             this.medicalNum = medicalAid.medicalNum;
-            this.medicalName = medicalAid.medicalName;
-            this.medicAddr = medicalAid.medicAddr;
-
+            this.medicalName=medicalAid.medicalName;
+            this.medicalAddr=medicalAid.medicAddr;
             return this;
         }
-
         public MedicalAid build() {
             return new MedicalAid(this);
+
         }
     }
 }
+
+
+

@@ -1,96 +1,90 @@
 package za.ac.cput.controller;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import za.ac.cput.domain.HospitalRoom;
 import za.ac.cput.domain.MedicalAid;
 import za.ac.cput.factory.MedicalAidFactory;
+import za.ac.cput.service.MedicalAidService;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
-/*
-    MedicalAidControllerTest.java
-    Test for the MedicalAid
-    Author: Shina Kara (219333181).
-    Date: 23 October 2022
-*/
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class  MedicalAidControllerTest {
 
+@TestMethodOrder(MethodOrderer.MethodName.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class MedicalAidControllerTest {
+
+    private String baseUrl;
     @LocalServerPort
     private int port;
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Autowired
-    private InvoiceController controller;
-    @Autowired private TestRestTemplate restTemplate;
+    private MedicalAidController controller;
+
+    @Autowired
+    private MedicalAidService medicalAidService;
 
     private MedicalAid medicalAid;
-    private String baseUrl;
 
     @BeforeEach
     void setUp() {
         assertNotNull(controller);
-        this.medicalAid = MedicalAidFactory.createMedicalAid("10122","Sarah", "Lansdowne");
+        this.medicalAid = MedicalAidFactory.createMedicalAid("101312313", "Discovery","Grassy Park");
+        this.medicalAidService.save(medicalAid);
         this.baseUrl = "http://localhost:" + this.port + "/hospital-system/medicalaid/";
     }
 
-    @Order(1)
     @Test
-    void save() {
+    void a_save() {
         String url = baseUrl + "save";
         System.out.println(url);
-        ResponseEntity<MedicalAid> response = this.restTemplate
+        ResponseEntity<HospitalRoom> response = this.restTemplate
                 .withBasicAuth("admin-user", "65ff7492d30")
-                .postForEntity(url, this.medicalAid, MedicalAid.class);
+                .postForEntity(url, this.medicalAid, HospitalRoom.class);
         System.out.println(response);
-        assertAll(
-                () -> assertEquals(HttpStatus.OK,response.getStatusCode()),
-                () -> assertNotNull(response.getBody())
-        );
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
 
-    @Order(3)
     @Test
-    void delete() {
-        String url = baseUrl + "delete/" + this.medicalAid.getMedicalNum();
-        System.out.println(url);
-        this.restTemplate.delete(url);
-    }
-
-    @Order(2)
-    @Test
-    void readId() {
+    public void b_read() {
         String url = baseUrl + "read/" + this.medicalAid.getMedicalNum();
         System.out.println(url);
         ResponseEntity<MedicalAid> response = this.restTemplate
                 .withBasicAuth("admin-user", "65ff7492d30")
                 .getForEntity(url, MedicalAid.class);
         System.out.println(response);
-        assertAll(
-                ()-> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                ()-> assertNotNull(response.getBody())
-        );
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
 
-    @Order(4)
     @Test
-    void findAll() {
-        String url = baseUrl + "all";
+    public void c_delete() {
+        String url = baseUrl + "delete/" + this.medicalAid.getMedicalNum();
         System.out.println(url);
-        ResponseEntity<MedicalAid []> response =
-                this.restTemplate
-                        .withBasicAuth("admin-user", "65ff7492d30")
-                        .getForEntity(url, MedicalAid[].class);
-        System.out.println(Arrays.asList(response.getBody()));
-        assertAll(
-                () -> assertEquals(HttpStatus.OK, response.getStatusCode()),
-                () -> assertEquals(1, response.getBody().length)
-        );
+        this.restTemplate.delete(url);
     }
+
+    @Test
+    public void d_findAll() {
+        String url = baseUrl + "find-all";
+        System.out.println(url);
+        ResponseEntity<MedicalAid[]> response = this.restTemplate
+                .withBasicAuth("client-user", "1253208465b")
+                .getForEntity(url, MedicalAid[].class);
+        System.out.println("Show All:");
+        System.out.println(Arrays.asList(Objects.requireNonNull(response.getBody())));
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(2, response.getBody().length));
+    }
+
 }

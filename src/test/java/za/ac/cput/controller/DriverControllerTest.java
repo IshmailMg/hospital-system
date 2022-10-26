@@ -46,7 +46,7 @@ class DriverControllerTest {
     void setUp() {
         assertNotNull(controller);
         this.driver = DriverFactory.createDriver("29", "Nzwakie", "Mgxaji", "CA123456");
-        this.baseUrl = "http://localhost:" + this.port + "/driver/";
+        this.baseUrl = "http://localhost:" + this.port + "/hospital-system/driver/";
     }
 
     @Test
@@ -81,7 +81,7 @@ class DriverControllerTest {
 
     @Test
     public void d_findAll() {
-        String url = baseUrl + "all/";
+        String url = baseUrl + "get-all/";
         System.out.println(url);
         ResponseEntity<Driver[]> response = this.restTemplate
                 .withBasicAuth(SECURITY_USERNAME, SECURITY_PASSWORD)

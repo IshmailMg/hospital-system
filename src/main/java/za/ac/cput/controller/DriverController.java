@@ -16,7 +16,7 @@ import java.util.List;
 */
 
 @RestController
-@RequestMapping("/driver")
+@RequestMapping("hospital-system/driver")
 public class DriverController {
     private DriverServiceImpl driverService;
     @Autowired
@@ -42,7 +42,7 @@ public class DriverController {
         return driverService.delete(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/get-all")
     public List<Driver> getAll(){return this.driverService.getAll();}
 
 

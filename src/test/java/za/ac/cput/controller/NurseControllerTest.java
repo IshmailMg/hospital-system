@@ -45,9 +45,9 @@ class NurseControllerTest {
     @BeforeEach
     void setUp() {
         assertNotNull(controller);
-        this.nurse = NurseFactory.createNurse("12", "Jonno", "Moriarty");
+        this.nurse = NurseFactory.createNurse("112123", "Jonno", "Moriarty");
         this.nurseService.save(nurse);
-        this.baseUrl = "http://localhost:" + this.port + "/hospital system/nurse/";
+        this.baseUrl = "http://localhost:" + this.port + "/hospital-system/nurse/";
     }
 
     @Test
@@ -88,7 +88,7 @@ class NurseControllerTest {
                 .withBasicAuth("admin-user", "65ff7492d30")
                 .getForEntity(url, Nurse[].class);
         System.out.println(Arrays.asList(response.getBody()));
-        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(17, response.getBody().length));
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(1, response.getBody().length));
     }
 
 }

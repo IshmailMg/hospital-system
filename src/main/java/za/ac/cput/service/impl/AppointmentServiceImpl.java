@@ -21,18 +21,18 @@ public class AppointmentServiceImpl implements AppointmentService {
         this.repository = repository;
     }
 
-@Override
+    @Override
     public Appointment save(Appointment appointment) {
 
         return repository.save(appointment);
     }
 
-@Override
+    @Override
     public Optional<Appointment> read(String id) {
         return this.repository.findById(id);
     }
 
- @Override
+    @Override
     public boolean delete(String id) {
         if (this.repository.existsById(id)) {
             this.repository.deleteById(id);

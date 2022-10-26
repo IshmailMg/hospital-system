@@ -12,8 +12,6 @@ import za.ac.cput.domain.CleaningStaff;
 import za.ac.cput.factory.AppointmentFactory;
 import za.ac.cput.factory.CleaningStaffFactory;
 import za.ac.cput.service.AppointmentService;
-import za.ac.cput.service.impl.AppointmentServiceImpl;
-import za.ac.cput.service.impl.CleaningStaffServiceImpl;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -25,9 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class AppointmentControllerTest {
-    public static String SECURITY_USERNAME = "admin-user";
-    public static String SECURITY_PASSWORD = "65ff7492d30";
-
     private String baseUrl;
     @LocalServerPort
     private int port;
@@ -43,8 +38,9 @@ class AppointmentControllerTest {
     @BeforeEach
     void setUp() {
         assertNotNull(controller);
-        this.appointment = AppointmentFactory.createAppointment("0056", "23July 2022", "30min","10:00" );
-        this.baseUrl = "http://localhost:" + this.port + "/appointment/";
+        this.appointment = AppointmentFactory.createAppointment("12", "23 November 2022","30Min","10:00");
+        this.service.save(appointment);
+        this.baseUrl = "http://localhost:" + this.port + "/hospital-system/appointment/";
     }
 
     @Test
@@ -52,18 +48,19 @@ class AppointmentControllerTest {
         String url = baseUrl + "save";
         System.out.println(url);
         ResponseEntity<Appointment> response = this.restTemplate
-                .withBasicAuth(SECURITY_USERNAME, SECURITY_PASSWORD)
+                .withBasicAuth("admin-user", "65ff7492d30")
                 .postForEntity(url, this.appointment, Appointment.class);
         System.out.println(response);
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
 
+    @Order(2)
     @Test
-    public void b_read() {
-        String url = baseUrl + "find/" + this.appointment.getAppointmentId();
+    public void read() {
+        String url = baseUrl + "read/" + this.appointment.getAppointmentId();
         System.out.println(url);
         ResponseEntity<Appointment> response = this.restTemplate
-                .withBasicAuth(SECURITY_USERNAME, SECURITY_PASSWORD)
+                .withBasicAuth("admin-user", "65ff7492d30")
                 .getForEntity(url, Appointment.class);
         System.out.println(response);
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
@@ -71,23 +68,23 @@ class AppointmentControllerTest {
 
 
     @Test
-    public void c_delete() {
+    public void delete() {
         String url = baseUrl + "delete/" + this.appointment.getAppointmentId();
         System.out.println(url);
         this.restTemplate.delete(url);
     }
 
+    @Order(3)
     @Test
     public void d_findAll() {
         String url = baseUrl + "all/";
         System.out.println(url);
         ResponseEntity<Appointment[]> response = this.restTemplate
-                .withBasicAuth(SECURITY_USERNAME, SECURITY_PASSWORD)
+                .withBasicAuth("client-user", "1253208465b")
                 .getForEntity(url, Appointment[].class);
-        assertNotNull(response);
-        assertAll(()->assertEquals(HttpStatus.OK,response.getStatusCode()));
         System.out.println("Show All:");
         System.out.println(Arrays.asList(Objects.requireNonNull(response.getBody())));
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(3, response.getBody().length));
     }
 
 

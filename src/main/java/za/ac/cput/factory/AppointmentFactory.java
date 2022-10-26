@@ -8,6 +8,9 @@ import za.ac.cput.util.StringHelper;
 public class AppointmentFactory {
     public static Appointment createAppointment(String appointmentId, String appointmentDate, String appointmentDuration, String appointmentTime) {
         StringHelper.checkStringParam("appointmentId", appointmentId);
+        StringHelper.checkStringParam("appointmentDate", appointmentDate);
+        StringHelper.checkStringParam("appointmentDuration", appointmentDuration);
+        StringHelper.checkStringParam("appointmentTime", appointmentTime);
         return new Appointment.Builder().appointmentId(appointmentId).appointmentDate(appointmentDate).appointmentDuration(appointmentDuration).appointmentTime(appointmentTime).build();
     }
 }

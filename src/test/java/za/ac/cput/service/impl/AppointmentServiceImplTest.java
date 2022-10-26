@@ -30,7 +30,7 @@ AppointmentServiceImpl appointmentService;
     void save() {
    appointmentService = new AppointmentServiceImpl(repository);
    appointment1 = new Appointment.Builder().appointmentDate("23 November 2022").appointmentId("00012").build();
-   appointment2 = new Appointment.Builder().appointmentDate("16 July 2022").appointmentId("00045").build();
+   appointment2 = new Appointment.Builder().appointmentDate("16 July 2022").appointmentId("45").build();
    repository.save(appointment1);
    repository.save(appointment2);
 

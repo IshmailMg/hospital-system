@@ -18,6 +18,6 @@ public class SupplierFactory {
         StringHelper.checkStringParam("suppAddress", suppAddress);
         StringHelper.checkStringParam("suppRegNum", suppRegNum);
 
-        return new Supplier.Builder().suppID(suppID).suppAddress(suppAddress).suppRegNum(suppRegNum).build();
+        return new Supplier.Builder().setSuppID(suppID).setSuppAddress(suppAddress).setSuppRegNum(suppRegNum).build();
     }
 }

@@ -16,32 +16,33 @@ import za.ac.cput.service.PatientService;
 
 import java.util.Arrays;
 
+import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
+
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PatientControllerTest {
-
-    public static String SECURITY_USERNAME = "user";
-    public static String SECURITY_PASSWORD = "password";
 
     private String baseUrl;
     @LocalServerPort
     private int port;
     @Autowired
     private TestRestTemplate restTemplate;
+
     @Autowired
     private PatientController controller;
+
     @Autowired
-    private PatientService patientService;
+    private PatientService hospitalRoomService;
 
     private Patient patient;
 
     @BeforeEach
     void setUp() {
         assertNotNull(controller);
-        this.patient = PatientFactory.createPatient("389887","Tom","Davis","23 Street","089775536");
-        this.patientService.save(patient);
-        this.baseUrl = "http://localhost:" + this.port + "/hospital system/patient/";
+        this.patient = PatientFactory.createPatient("101323", "Hagrad", "The Wizardo", "The castles", "0761284859");
+        this.hospitalRoomService.save(patient);
+        this.baseUrl = "http://localhost:" + this.port + "/hospital-system/patient/";
     }
 
     @Test
@@ -49,38 +50,39 @@ class PatientControllerTest {
         String url = baseUrl + "save";
         System.out.println(url);
         ResponseEntity<Patient> response = this.restTemplate
-                .withBasicAuth("admin-user","65ff7492d30")
-                .postForEntity(url, this.patient,Patient.class);
+                .withBasicAuth("admin-user", "65ff7492d30")
+                .postForEntity(url, this.patient, Patient.class);
         System.out.println(response);
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
 
     @Test
-    void b_read() {
+    public void b_read() {
         String url = baseUrl + "read/" + this.patient.getPatIdNum();
         System.out.println(url);
         ResponseEntity<Patient> response = this.restTemplate
-                .withBasicAuth("admin-user","65ff7492d30")
+                .withBasicAuth("admin-user", "65ff7492d30")
                 .getForEntity(url, Patient.class);
         System.out.println(response);
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
 
     @Test
-    void c_delete() {
+    public void c_delete() {
         String url = baseUrl + "delete/" + this.patient.getPatIdNum();
         System.out.println(url);
         this.restTemplate.delete(url);
     }
 
     @Test
-    void d_getAll() {
+    public void d_findAll() {
         String url = baseUrl + "find-all";
         System.out.println(url);
         ResponseEntity<Patient[]> response = this.restTemplate
-                .withBasicAuth("admin-user", "65ff7492d30")
+                .withBasicAuth("client-user", "1253208465b")
                 .getForEntity(url, Patient[].class);
-        System.out.println(Arrays.asList(response.getBody()));
-        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(21, response.getBody().length));
+        System.out.println("Show All:");
+        System.out.println(Arrays.asList(Objects.requireNonNull(response.getBody())));
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(1, response.getBody().length));
     }
 }

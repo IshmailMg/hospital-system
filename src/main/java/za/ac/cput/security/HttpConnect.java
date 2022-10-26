@@ -2,6 +2,7 @@ package za.ac.cput.security;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class HttpConnect {
@@ -48,4 +49,5 @@ public class HttpConnect {
             return null;
         }
     }
+
 }

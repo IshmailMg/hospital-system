@@ -23,7 +23,7 @@ import java.util.Set;
 */
 @RestController
 @Controller
-@RequestMapping("hospital system/nurse/")
+@RequestMapping("hospital-system/nurse/")
 @Slf4j
 public class NurseController {
     private final NurseService service;

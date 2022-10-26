@@ -10,57 +10,54 @@ import za.ac.cput.domain.Invoice;
 import za.ac.cput.factory.InvoiceFactory;
 import za.ac.cput.service.InvoiceService;
 
-import java.util.Optional;
+import javax.lang.model.element.Name;
+import javax.validation.Valid;
 import java.util.Set;
-/*
-    InvoiceController.java
-    Controller for the Invoice .
-    Author: Shina Kara (219333181)
-    Date: 4 August 2022
-*/
+
 @RestController
 @RequestMapping("hospital-system/invoice/")
 @Slf4j
 public class InvoiceController {
-    private final InvoiceService invoiceService;
+    private final InvoiceService service;
 
     @Autowired
-    public InvoiceController(InvoiceService invoiceService) {
-        this.invoiceService = invoiceService;
+    public InvoiceController(InvoiceService service) {
+        this.service = service;
     }
 
     @PostMapping("save")
-    public ResponseEntity<Invoice> save(@RequestBody Invoice invoice) {
+    public ResponseEntity<Invoice> save(@Valid @RequestBody Invoice invoice) {
         log.info("Save request: {}", invoice);
+        Name validateName;
         Invoice validatedInvoice;
         try {
-            validatedInvoice = InvoiceFactory.createInvoice(invoice.getInvoiceNum(), invoice.getInvoiceAmount(),invoice.getInvoiceType(), invoice.getInvoiceDate());
-        } catch (IllegalArgumentException e) {
-            log.info("Save request error: {}", e.getMessage());
+            validatedInvoice = InvoiceFactory.createInvoice(invoice.getInvoiceNum(), invoice.getInvoiceAmount(), invoice.getInvoiceType(), invoice.getInvoiceDate());
+        } catch (IllegalArgumentException ex) {
+            log.info("Save request error: {}", ex.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-        Invoice save = invoiceService.save(validatedInvoice);
-        return ResponseEntity.ok(save);
+        Invoice saved = service.save(validatedInvoice);
+        return ResponseEntity.ok(saved);
+    }
+
+    @GetMapping("read/{id}")
+    public ResponseEntity<Invoice> read(@PathVariable String id) {
+        log.info("Read request: {}", id);
+        Invoice invoice = this.service.read(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(invoice);
     }
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         log.info("Delete request{}", id);
-        this.invoiceService.delete(id);
+        this.service.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("read/{id}")
-    public ResponseEntity<Optional<Invoice>> readId(@PathVariable String id) {
-        log.info("Read request: {}", id);
-        Optional<Invoice> invoice = this.invoiceService.read(id);
-        return ResponseEntity.ok(invoice);
-    }
 
-    @GetMapping("all")
-    public ResponseEntity<Set<Invoice>> findAll() {
-        Set<Invoice> invoices = this.invoiceService.getAll();
+    @GetMapping("find-all")
+    public ResponseEntity<Set<Invoice>> getAll() {
+        Set<Invoice> invoices = this.service.getAll();
         return ResponseEntity.ok(invoices);
     }
-
 }

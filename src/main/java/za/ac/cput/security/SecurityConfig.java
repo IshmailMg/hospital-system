@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.DELETE, "/**/hospitalroom/delete/{id}").hasRole("ADMIN")
                 //changed this because only the admin should read specific IDs
                 .antMatchers(HttpMethod.GET, "/**/hospitalroom/read/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/**/hospitalroom/find-all").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/hospitalroom/find-all").hasAnyRole("USER", "ADMIN")
 
                 //Path matcher for Doctor
                 .antMatchers(HttpMethod.POST, "/hospital-system/doctor/create").hasRole("ADMIN")
@@ -63,23 +63,67 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/hospital-system/doctor/get-all").hasAnyRole("ADMIN", "USER")
                 .antMatchers(HttpMethod.DELETE, "/hospital-system/doctor/delete/{id}").hasRole("ADMIN")
 
-             //Path matcher for cleaningstaff
-            .antMatchers(HttpMethod.POST, "/hospital-system/cleaningStaff/save").hasRole("ADMIN")
-            .antMatchers(HttpMethod.GET, "/hospital-system/cleaningStaff/read/{id}").hasRole("ADMIN")
-            .antMatchers(HttpMethod.GET, "/hospital-system/cleaningStaff/find-All").hasAnyRole("ADMIN", "USER")
-            .antMatchers(HttpMethod.DELETE, "/hospital-system/cleaningStaff/delete/{id}").hasRole("ADMIN")
+                //Path matcher for the Driver System
+                .antMatchers(HttpMethod.POST, "/**/secretary/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**/secretary/delete/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/secretary/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/secretary/get-all").hasAnyRole("USER", "ADMIN")
 
-            //Path matcher for appointment
-            .antMatchers(HttpMethod.POST, "/hospital-system/appointment/save").hasRole("ADMIN")
-            .antMatchers(HttpMethod.GET, "/hospital-system/appointment/read/{id}").hasRole("ADMIN")
-            .antMatchers(HttpMethod.GET, "/hospital-system/appointment/find-all").hasAnyRole("ADMIN", "USER")
-            .antMatchers(HttpMethod.DELETE, "/hospital-system/appointment/delete/{id}").hasRole("ADMIN")
+                //Path matcher for cleaning staff
+                .antMatchers(HttpMethod.POST, "/hospital-system/cleaningStaff/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/hospital-system/cleaningStaff/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/hospital-system/cleaningStaff/find-All").hasAnyRole("ADMIN", "USER")
+                .antMatchers(HttpMethod.DELETE, "/hospital-system/cleaningStaff/delete/{id}").hasRole("ADMIN")
 
-                //Path matcher For the Nurse System
+                //Path matcher for appointment
+                .antMatchers(HttpMethod.POST, "/hospital-system/appointment/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/hospital-system/appointment/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/hospital-system/appointment/find-all").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/hospital-system/appointment/delete/{id}").hasRole("ADMIN")
+
+                //Path matcher for the Nurse System
                 .antMatchers(HttpMethod.POST, "/**/nurse/save").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/**/nurse/delete/{id}").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/**/nurse/read/{id}").hasAnyRole("USER","ADMIN")
-                .antMatchers(HttpMethod.GET, "/**/nurse/find-all").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/nurse/read/{id}").hasAnyRole("USER", "ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/nurse/find-all").hasAnyRole("USER", "ADMIN")
+
+                //Path matcher for the Driver System
+                .antMatchers(HttpMethod.POST, "/**/driver/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**/driver/delete/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/driver/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/driver/get-all").hasAnyRole("USER", "ADMIN")
+
+                //Path matcher for the Supplier System
+                .antMatchers(HttpMethod.POST, "/**/supplier/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**/supplier/delete/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/supplier/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/supplier/find-all").hasAnyRole("USER", "ADMIN")
+
+                //Path matcher for the Invoice System
+                .antMatchers(HttpMethod.POST, "/**/invoice/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**/invoice/delete/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/invoice/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/invoice/find-all").hasAnyRole("USER", "ADMIN")
+
+                //Path matcher for the Medical Aid System
+                .antMatchers(HttpMethod.POST, "/**/medicalaid/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**/medicalaid/delete/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/medicalaid/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/medicalaid/find-all").hasAnyRole("USER", "ADMIN")
+
+                //Path matcher for the Medicine System
+                .antMatchers(HttpMethod.POST, "/**/medicine/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**/medicine/delete/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/medicine/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/medicine/find-all").hasAnyRole("USER", "ADMIN")
+
+                //Path matcher for the Patient System
+                .antMatchers(HttpMethod.POST, "/**/patient/save").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**/patient/delete/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/patient/read/{id}").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET, "/**/patient/find-all").hasAnyRole("USER", "ADMIN")
+
+
 
 
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

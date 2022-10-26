@@ -1,26 +1,22 @@
 package za.ac.cput.domain;
 
+import com.sun.istack.NotNull;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
-/*
-    Invoice.java
-    Entity for the Invoice
-    Author: Shina Kara (219333181).
-    Date: 4 August 2022
-*/
+
 @Entity
+@Table(name = "tbl_invoice")
 public class Invoice implements Serializable {
+
     @Id
-    @Column(name = "invoice_num")
     private String invoiceNum;
 
     @NotNull
-    private Double invoiceAmount;
+    private double invoiceAmount;
 
     @NotNull
     private String invoiceType;
@@ -28,21 +24,21 @@ public class Invoice implements Serializable {
     @NotNull
     private String invoiceDate;
 
-    protected Invoice() {
-    }
-
-    private Invoice(Builder builder) {
+    public Invoice(Builder builder) {
         this.invoiceNum = builder.invoiceNum;
         this.invoiceAmount = builder.invoiceAmount;
         this.invoiceType = builder.invoiceType;
         this.invoiceDate = builder.invoiceDate;
     }
 
+    public Invoice() {
+    }
+
     public String getInvoiceNum() {
         return invoiceNum;
     }
 
-    public Double getInvoiceAmount() {
+    public double getInvoiceAmount() {
         return invoiceAmount;
     }
 
@@ -59,7 +55,7 @@ public class Invoice implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Invoice invoice = (Invoice) o;
-        return Objects.equals(invoiceNum, invoice.invoiceNum) && Objects.equals(invoiceAmount, invoice.invoiceAmount) && Objects.equals(invoiceType, invoice.invoiceType) && Objects.equals(invoiceDate, invoice.invoiceDate);
+        return Double.compare(invoice.invoiceAmount, invoiceAmount) == 0 && Objects.equals(invoiceNum, invoice.invoiceNum) && Objects.equals(invoiceType, invoice.invoiceType) && Objects.equals(invoiceDate, invoice.invoiceDate);
     }
 
     @Override
@@ -69,7 +65,7 @@ public class Invoice implements Serializable {
 
     @Override
     public String toString() {
-        return "Invoice{" + "invoiceNum='" + invoiceNum + '\'' + ", invoiceAmount='" + invoiceAmount + '\'' + ", invoiceType='" + invoiceType + '\'' + ", invoiceDate='" + invoiceDate + '\'' + '}';
+        return "Invoice{" + "invoiceNum='" + invoiceNum + '\'' + ", invoiceAmount=" + invoiceAmount + ", invoiceType='" + invoiceType + '\'' + ", invoiceDate='" + invoiceDate + '\'' + '}';
     }
 
     public static class Builder {
@@ -78,22 +74,22 @@ public class Invoice implements Serializable {
         private String invoiceType;
         private String invoiceDate;
 
-        public Builder setInvoiceNum(String invoiceNum) {
+        public Builder invoiceNum(String invoiceNum) {
             this.invoiceNum = invoiceNum;
             return this;
         }
 
-        public Builder setInvoiceAmount(Double invoiceAmount) {
+        public Builder invoiceAmount(double invoiceAmount) {
             this.invoiceAmount = invoiceAmount;
             return this;
         }
 
-        public Builder setInvoiceType(String invoiceType) {
+        public Builder invoiceType(String invoiceType) {
             this.invoiceType = invoiceType;
             return this;
         }
 
-        public Builder setInvoiceDatee(String invoiceDate) {
+        public Builder invoiceDate(String invoiceDate) {
             this.invoiceDate = invoiceDate;
             return this;
         }
@@ -110,6 +106,4 @@ public class Invoice implements Serializable {
             return new Invoice(this);
         }
     }
-
 }
-

@@ -4,21 +4,17 @@ import za.ac.cput.domain.Invoice;
 import za.ac.cput.util.StringHelper;
 /*
     InvoiceFactory.java
-    Factory for  Invoice .
+    Factory for  Invoice
     Author: Shina Kara (219333181)
     Date: 13 August 2022
 */
 public class InvoiceFactory {
-    public static Invoice createInvoice(String invoiceNum, Double invoiceAmount, String invoiceType, String invoiceDate){
-        StringHelper.checkStringParam("invoiceNum", invoiceNum);
+    public static Invoice createInvoice(String invoiceNum, Double invoiceAmount, String invoiceDate, String invoiceType) {
+      StringHelper.checkStringParam("invoiceNum", invoiceNum);
         StringHelper.checkStringParam("invoiceType", invoiceType);
         StringHelper.checkStringParam("invoiceDate", invoiceDate);
-        return new Invoice.Builder()
-                .setInvoiceNum(invoiceNum)
-                .setInvoiceAmount(invoiceAmount)
-                .setInvoiceType(invoiceType)
-                .setInvoiceDatee(invoiceDate)
-                .build();
+      return new Invoice.Builder().invoiceNum(invoiceNum).invoiceAmount(invoiceAmount).invoiceType(invoiceType).invoiceDate(invoiceDate).build();
 
     }
+
 }

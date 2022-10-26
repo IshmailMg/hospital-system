@@ -1,9 +1,7 @@
 package za.ac.cput.controller;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -15,72 +13,77 @@ import za.ac.cput.factory.MedicineFactory;
 import za.ac.cput.service.MedicineService;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MedicineControllerTest {
-
-    public static String SECURITY_USERNAME = "user";
-    public static String SECURITY_PASSWORD = "password";
-
     private String baseUrl;
     @LocalServerPort
     private int port;
     @Autowired
     private TestRestTemplate restTemplate;
+
     @Autowired
     private MedicineController controller;
-    @Autowired
-    private MedicineService medicineService;
 
+    @Autowired
+    private MedicineService service;
     private Medicine medicine;
 
     @BeforeEach
     void setUp() {
         assertNotNull(controller);
-        this.medicine = MedicineFactory.createMedicine("7638","40","PainKillers");
-        this.medicineService.save(medicine);
-        this.baseUrl = "http://localhost:" + this.port + "/hospital system/medicine/";
+        this.medicine = MedicineFactory.createMedicine("12124341", "300ml","Drug");
+        this.service.save(medicine);
+        this.baseUrl = "http://localhost:" + this.port + "/hospital-system/medicine/";
     }
-
+    @Order(1)
     @Test
-    void a_save() {
+    void save() {
         String url = baseUrl + "save";
         System.out.println(url);
         ResponseEntity<Medicine> response = this.restTemplate
-                .withBasicAuth("admin-user","65ff7492d30")
+                .withBasicAuth("admin-user", "65ff7492d30")
                 .postForEntity(url, this.medicine, Medicine.class);
         System.out.println(response);
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
 
+    @Order(2)
     @Test
-    void b_read() {
+    public void read() {
         String url = baseUrl + "read/" + this.medicine.getMedicineId();
+        System.out.println(url);
         ResponseEntity<Medicine> response = this.restTemplate
-                .withBasicAuth("admin-user","65ff7492d30")
-                .getForEntity(url,Medicine.class);
+                .withBasicAuth("admin-user", "65ff7492d30")
+                .getForEntity(url, Medicine.class);
+
         System.out.println(response);
         assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertNotNull(response.getBody()));
     }
 
+    @Order(4)
     @Test
-    void c_delete() {
+    public void delete() {
         String url = baseUrl + "delete/" + this.medicine.getMedicineId();
         System.out.println(url);
         this.restTemplate.delete(url);
     }
 
+    @Order(3)
     @Test
-    void d_getAll() {
+    public void findAll() {
         String url = baseUrl + "find-all";
         System.out.println(url);
         ResponseEntity<Medicine[]> response = this.restTemplate
-                .withBasicAuth("admin-user", "65ff7492d30")
+                .withBasicAuth("client-user", "1253208465b")
                 .getForEntity(url, Medicine[].class);
-        System.out.println(Arrays.asList(response.getBody()));
-        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(21, response.getBody().length));
+        System.out.println("Show All:");
+        System.out.println(Arrays.asList(Objects.requireNonNull(response.getBody())));
+        assertAll(() -> assertEquals(HttpStatus.OK, response.getStatusCode()), () -> assertEquals(1, response.getBody().length));
     }
 }
